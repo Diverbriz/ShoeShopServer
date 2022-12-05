@@ -10,7 +10,7 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brand_sequence")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     public void setId(Long id) {

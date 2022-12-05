@@ -1,6 +1,10 @@
 package sheloumov.v.d.ShoeShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +28,23 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAll(){
+    public ResponseEntity<UserResponse> getAll(){
         List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        if (users != null){
+            return new ResponseEntity<>(new UserResponse(users), HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{page}")
-    public ResponseEntity<UserResponse> getAllPagination(@PathVariable String page){
+    @GetMapping(path = "/page", produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<UserResponse> getAllPagination(@Param(value = "limit") Integer  limit,
+                                                             @Param(value = "offset") Integer offset){
 
-        UserResponse userResponse = new UserResponse(userService.getAllUsers());
-        System.out.println(Arrays.toString(userResponse.getData().toArray()));
-        return new ResponseEntity<>(HttpStatus.OK);
+        UserResponse userResponse = new UserResponse(userService
+                .getUsersOfPages(PageRequest.of(offset, limit)));
+//        System.out.println(Arrays.toString(userResponse.getData().toArray()));
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,14 +64,21 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public void createUser(@RequestBody User user){
-        System.out.println(user);
+    public ResponseEntity createUser(@RequestBody User user){
+        System.out.println("user");
         if(user.getRole() == null){
             user.setRole("USER");
         }
-        userService.createUser(user);
-
+        try{
+            userService.createUser(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity("Непредвиденная ошибка" ,HttpStatus.BAD_REQUEST);
     }
+
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<User> deleteUser(@RequestParam Long id){
@@ -70,18 +87,22 @@ public class UserController {
         }
 
         Optional<User> user = userService.findOneUser(id);
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.deleteUser(id);
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
-
-
-
-
 //    @GetMapping("/users")
 //    public List<User> getAllCountries() {
 //        return userService.getAllUsers();
 //    }
+
+    public User userUpdate(User user){
+        User user1 = new User();
+        user1.setEmail(user.getEmail());
+        user1.setPassword(user.getPassword());
+        user1.setRole(user.getRole());
+        return user1;
+    }
 }

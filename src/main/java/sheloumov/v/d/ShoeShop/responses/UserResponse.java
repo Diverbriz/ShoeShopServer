@@ -8,5 +8,7 @@ public class UserResponse extends CommonResponse<User>{
 
     public UserResponse(List<User> data) {
         super(data);
+
+
     }
 }

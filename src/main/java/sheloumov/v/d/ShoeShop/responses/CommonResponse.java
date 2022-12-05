@@ -17,6 +17,17 @@ public abstract class CommonResponse<C extends Object> {
     @Autowired
     public CommonResponse(List<C> data) {
         this.data = data;
+        this.total = data.size();
+        this.per_page = data.size();
+        this.total_pages = 1;
+    }
+
+    @Autowired
+    public CommonResponse(List<C> data, int total_pages) {
+        this.data = data;
+        this.total = data.size();
+        this.total_pages = total_pages;
+        this.per_page = total / total_pages;
     }
 
     public List<C> getData() {
