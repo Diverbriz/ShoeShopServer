@@ -2,6 +2,9 @@ package sheloumov.v.d.ShoeShop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sheloumov.v.d.ShoeShop.entity.Basket;
 import sheloumov.v.d.ShoeShop.entity.User;
@@ -42,12 +45,12 @@ public class UserService {
 
     public void createUser(User user){
             try{
-                if(userRepository.findFirstByEmail(user.getEmail()) != null){
-                    User userUpdate = userRepository.findFirstByEmail(user.getEmail());
+                if(userRepository.findFirstByLogin(user.getLogin()) != null){
+                    User userUpdate = userRepository.findFirstByLogin(user.getLogin());
                     System.out.println(userUpdate.toString());
-                    userUpdate.setEmail(user.getEmail());
+                    userUpdate.setLogin(user.getLogin());
                     //TODO: добавить сброс пароля
-                    userUpdate.setRole(user.getRole());
+
                 }
                 else {
                     userRepository.save(user);
@@ -78,4 +81,11 @@ public class UserService {
     public Optional<User> findOneUser(Long id){
         return userRepository.findById(id);
     }
+
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User u = userRepository.getUserByLogin(username);
+//        return null;
+//    }
 }

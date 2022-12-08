@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllBy(Pageable pageable);
-    User findFirstByEmail(String email);
+    User findFirstByLogin(String login);
+
+    User getUserByLogin(String login);
 }

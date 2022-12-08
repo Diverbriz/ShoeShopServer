@@ -32,19 +32,21 @@ public class TypeService {
     }
 
     public Type findOneByName(String name){
-        try {
-            return typeRepository.findFirstByName(name);
-        } catch (NotFoundExceptions e){
-            e.printStackTrace();
+
+        Type type = typeRepository.findFirstByName(name);
+        if(type != null){
+            return type;
         }
-        return null;
+        else {
+            throw  new NotFoundExceptions();
+        }
     }
 
-    public List<Type> getAllBrand(){
+    public List<Type> getAllType(){
         return typeRepository.findAll();
     }
 
-    public Type deleteBrand(Long id){
+    public Type deleteItem(Long id){
         Type type = typeRepository.findFirstById(id);
         if(type != null){
             typeRepository.delete(type);

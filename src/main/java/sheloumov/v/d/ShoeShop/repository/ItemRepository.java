@@ -6,4 +6,8 @@ import sheloumov.v.d.ShoeShop.entity.Item;
 import sheloumov.v.d.ShoeShop.service.ItemService;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
+
+    Item findFirstByName(String name);
+
+    Item findFirstById(Long id);
 }

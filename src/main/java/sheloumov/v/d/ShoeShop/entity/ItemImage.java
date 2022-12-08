@@ -17,6 +17,8 @@ public class ItemImage {
     @Column(name = "url")
     private String url;
 
+
+
     public void setId(Long id) {
         this.id = id;
     }

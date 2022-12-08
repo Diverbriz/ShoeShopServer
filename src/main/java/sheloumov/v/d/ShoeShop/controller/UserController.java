@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sheloumov.v.d.ShoeShop.entity.Roles;
 import sheloumov.v.d.ShoeShop.entity.User;
 import sheloumov.v.d.ShoeShop.responses.UserResponse;
 import sheloumov.v.d.ShoeShop.service.UserService;
@@ -67,7 +68,7 @@ public class UserController {
     public ResponseEntity createUser(@RequestBody User user){
         System.out.println("user");
         if(user.getRole() == null){
-            user.setRole("USER");
+            user.setRole(Roles.USER);
         }
         try{
             userService.createUser(user);
@@ -98,9 +99,14 @@ public class UserController {
 //        return userService.getAllUsers();
 //    }
 
+    @PostMapping("/login")
+    public void loginUser(){
+
+    }
+
     public User userUpdate(User user){
         User user1 = new User();
-        user1.setEmail(user.getEmail());
+        user1.setLogin(user.getLogin());
         user1.setPassword(user.getPassword());
         user1.setRole(user.getRole());
         return user1;

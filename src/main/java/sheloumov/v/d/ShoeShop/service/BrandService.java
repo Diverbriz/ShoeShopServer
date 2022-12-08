@@ -45,6 +45,17 @@ public class BrandService {
         }
     }
 
+    public Brand findOneById(Long id){
+
+        Brand brand = brandRepository.findFirstById(id);
+        if(brand != null){
+            return brand;
+        }
+        else {
+            throw  new NotFoundExceptions();
+        }
+    }
+
     public List<Brand> getAllBrand(){
         return brandRepository.findAll();
     }
