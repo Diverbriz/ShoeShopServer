@@ -17,7 +17,16 @@ public class ItemImage {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "name_img")
+    private String name;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setId(Long id) {
         this.id = id;

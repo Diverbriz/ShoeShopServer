@@ -1,7 +1,11 @@
 package sheloumov.v.d.ShoeShop.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +19,15 @@ import sheloumov.v.d.ShoeShop.service.ItemImageService;
 import sheloumov.v.d.ShoeShop.service.ItemService;
 import sheloumov.v.d.ShoeShop.service.TypeService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/items")
 public class ItemController {
+    @Value("${upload.file}")
+    private String uploadPath;
     private final BrandService brandService;
 
     private final TypeService typeService;
@@ -101,15 +109,15 @@ public class ItemController {
 
 
 
-    @PostMapping("/item/image/create")
-    public ResponseEntity<ItemImage> createItemImage(@RequestBody ItemImage item){
-//        try{
+//    @PostMapping("/item/image/create")
+//    public ResponseEntity<ItemImage> createItemImage(@RequestBody ItemImage item){
+////        try{
+////
+////            itemImageService.createItemImage(item);
+////        }
 //
-//            itemImageService.createItemImage(item);
-//        }
-
-        return new ResponseEntity<>(itemImageService.createItemImage(item), HttpStatus.OK);
-    }
+//        return new ResponseEntity<>(itemImageService.createItemImage(item), HttpStatus.OK);
+//    }
 
     @DeleteMapping("/item/image/delete/{id}")
     public ResponseEntity<ItemImage> deleteItemImages(@PathVariable Long id){
